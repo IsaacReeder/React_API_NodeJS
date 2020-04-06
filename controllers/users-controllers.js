@@ -48,7 +48,8 @@ const signup = async (req, res, next) => {
   const createdUser = new User({
     name,
     email,
-    image: "https://pbs.twimg.com/media/CoKy5UvXgAA0a_H.jpg",
+    image:
+      "https://usatftw.files.wordpress.com/2015/09/ap_vikings_mascot_football_76126918.jpg?w=1200",
     password,
     places: []
   });
@@ -56,7 +57,10 @@ const signup = async (req, res, next) => {
   try {
     await createdUser.save();
   } catch (err) {
-    const error = new HttpError("Signing up failed, please try again.", 500);
+    const error = new HttpError(
+      "Signing up failed, please try again later.",
+      500
+    );
     return next(error);
   }
 
@@ -72,7 +76,7 @@ const login = async (req, res, next) => {
     existingUser = await User.findOne({ email: email });
   } catch (err) {
     const error = new HttpError(
-      "Logging in failed, please try again later.",
+      "Loggin in failed, please try again later.",
       500
     );
     return next(error);
@@ -86,7 +90,10 @@ const login = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ message: "Logged in!" });
+  res.json({
+    message: "Logged in!",
+    user: existingUser.toObject({ getters: true })
+  });
 };
 
 exports.getUsers = getUsers;
